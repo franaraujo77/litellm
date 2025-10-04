@@ -1,0 +1,126 @@
+# litellm config.yaml
+# This is the core section where you define the list of models you want to expose through the proxy.
+model_list:
+  # -- OpenAI Models --
+  # GPT-5 Models
+  - model_name: "gpt-5"
+    litellm_params:
+      model: "openai/gpt-5"
+      api_key: "os.environ/OPENAI_API_KEY"
+      
+  - model_name: "gpt-5-codex"
+    litellm_params:
+      model: "openai/gpt-5-codex"
+      api_key: "os.environ/OPENAI_API_KEY"
+
+  # GPT-4o Models (Omni)
+  - model_name: "gpt-4o"
+    litellm_params:
+      model: "openai/gpt-4o"
+      api_key: "os.environ/OPENAI_API_KEY"
+  
+  - model_name: "gpt-4o-mini"
+    litellm_params:
+      model: "openai/gpt-4o-mini" # Cost-effective and fast Omni model
+      api_key: "os.environ/OPENAI_API_KEY"
+
+  # GPT-4 Turbo Model
+  - model_name: "gpt-4-turbo"
+    litellm_params:
+      model: "openai/gpt-4-turbo"
+      api_key: "os.environ/OPENAI_API_KEY"
+
+  # GPT-3.5 Turbo Model
+  - model_name: "gpt-3.5-turbo"
+    litellm_params:
+      model: "openai/gpt-3.5-turbo"
+      api_key: "os.environ/OPENAI_API_KEY"
+
+  # Image Generation Models
+  - model_name: "dall-e-3"
+    litellm_params:
+      model: "openai/dall-e-3"
+      api_key: "os.environ/OPENAI_API_KEY"
+
+  # Embedding Models
+  - model_name: "text-embedding-3-large"
+    litellm_params:
+      model: "openai/text-embedding-3-large"
+      api_key: "os.environ/OPENAI_API_KEY"
+
+  - model_name: "text-embedding-3-small"
+    litellm_params:
+      model: "openai/text-embedding-3-small"
+      api_key: "os.environ/OPENAI_API_KEY"
+
+  # Moderation Models
+  - model_name: "text-moderation-latest"
+    litellm_params:
+      model: "openai/text-moderation-latest"
+      api_key: "os.environ/OPENAI_API_KEY"
+
+  # Google Gemini model configurations
+  # drop_params is set to true to ignore any unsupported parameters like 'parallel_tool_calls=False'
+  - model_name: "gemini-1.5-pro"
+    litellm_params:
+      model: "gemini/gemini-1.5-pro-latest"
+      api_key: "os.environ/GEMINI_API_KEY"
+      drop_params: true
+
+  - model_name: "gemini-1.5-flash"
+    litellm_params:
+      model: "gemini/gemini-1.5-flash-latest"
+      api_key: "os.environ/GEMINI_API_KEY"
+      drop_params: true
+
+  - model_name: "gemini-pro"
+    litellm_params:
+      model: "gemini/gemini-pro"
+      api_key: "os.environ/GEMINI_API_KEY"
+      drop_params: true
+
+  - model_name: "gemini-pro-vision"
+    litellm_params:
+      model: "gemini/gemini-pro-vision"
+      api_key: "os.environ/GEMINI_API_KEY"
+      drop_params: true
+
+  - model_name: "embedding-001"
+    litellm_params:
+      model: "gemini/embedding-001"
+      api_key: "os.environ/GEMINI_API_KEY"
+      drop_params: true
+
+# This section defines your teams and their model access policies.
+# The 'teams' feature requires a database connection to work.
+teams:
+  - team_id: "codex_team"
+    models: ["all"]  # This team can access all models in the model_list
+    
+  - team_id: "webui_team"
+    models: ["all"]  # This team can also access all models
+  
+  - team_id: "claude_team"
+    models: ["all"]  # This team also has access to all models
+
+# This section defines your virtual keys and assigns them to a team.
+# The 'team_id' here links the key to a team defined above.
+virtual_keys:
+  - key: "os.environ/CODEX_VIRTUAL_KEY"
+    team_id: "codex_team" # This key belongs to the 'codex_team'
+    metadata:
+      user: "Codex"
+      
+  - key: "os.environ/WEBUI_VIRTUAL_KEY"
+    team_id: "webui_team" # This key belongs to the 'webui_team'
+    metadata:
+      user: "Open-WebUi"
+
+  - key: "os.environ/CLAUDE_VIRTUAL_KEY"
+    team_id: "claude_team" # This key belongs to the 'claude_team'
+    metadata:
+      user: "Claude-Code"
+
+# Optional: LiteLLM specific settings
+litellm_settings:
+  set_verbose: True   # Enable verbose logging for debugging purposes
